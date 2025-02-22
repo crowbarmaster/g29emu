@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/__vm
+/g29emu.vcxproj
+/g29emu.vcxproj.user
+/g29emu.vcxproj.filters

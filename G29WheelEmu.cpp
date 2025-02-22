@@ -24,16 +24,16 @@
 
 
 #include "G29WheelEmu.h"
-#include "DrivingForceGT.h"
+#include "G27InputDevice.h"
 #include "PS4AuthDevice.h"
 
-extern DrivingForceGT DFGT;
+extern G27InputDevice G27Input;
 extern PS4AuthDevice PS4AD;
 
 #define REPORT_TYPE_FEATURE 3
 #define MAX_CONTROL_TRANSFER_SIZE 64
 
-extern uint8_t DFGT_rep[64];
+extern uint8_t DeviceReport[64];
 extern LUFASerial Serial;
 
 static uint8_t report[] = {
@@ -49,8 +49,8 @@ static uint8_t report[] = {
     0x00, 0x80, //wheel
     0xff, 0xff, //gas pedal
     0xff, 0xff, //break pedal
-    0xff, 0xff, //unknown
-    0x00,
+    0xff, 0xff, //Clutch
+    0x00, // Shifter
     0xff, 0xff, //unknown
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00
@@ -106,11 +106,7 @@ void SendNextReport(void)
 
     /* Write IN Report Data */
 
-    memcpy(report,DFGT_rep,49);
-    if (report[7] == 1)
-    {
-      Serial.print("PS = 1");
-    }
+    memcpy(report,DeviceReport, 54);
 
     Endpoint_Write_Stream_LE(report, sizeof(report), NULL);
     
@@ -150,7 +146,15 @@ void ReceiveNextReport(void)
 
     if(length)
     {
-      
+          Serial.printhex(buffer[1]);
+          Serial.print(" [");
+
+          for (x=0;x<length;x++)
+          {
+            Serial.printhex(buffer[x]);
+            Serial.print(" ");
+          }
+          Serial.println("]");
       switch (buffer[1])
       {
         case 0xF8:
@@ -158,7 +162,18 @@ void ReceiveNextReport(void)
           if (buffer[2] == 2) { Serial.println("G29: Change Wheel Range to 200 degrees");}
           if (buffer[2] == 3) { Serial.println("G29: Change Wheel Range to 900 degrees");}
           if (buffer[2] == 9) { Serial.println("G29: Change Device Mode");}
-          if (buffer[2] == 0x12) {  } // LEDS
+          if (buffer[2] == 0x12) { 
+                      Serial.print("G29: LED Cmd 0x");
+          Serial.printhex(buffer[1]);
+          Serial.print(" [");
+
+          for (x=0;x<length;x++)
+          {
+            Serial.printhex(buffer[x]);
+            Serial.print(" ");
+          }
+          Serial.println("]");
+            } // LEDS
           if (buffer[2] == 0x81)
           { 
             Serial.print("G29: Wheel Range Change: ");
@@ -181,7 +196,7 @@ void ReceiveNextReport(void)
           Serial.println("]");
           break;
       }
-      DFGT.SendFFB(buffer);
+      G27Input.SendFFB(buffer);
     }
   }
 }
@@ -328,4 +343,3 @@ void EVENT_USB_Device_ControlRequest(void)
       break;
   }
 }
-

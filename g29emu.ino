@@ -33,7 +33,7 @@
 #include "LUFAConfig.h"
 #include <LUFA.h>
 #include "G29WheelEmu.h"
-#include "DrivingForceGT.h"
+#include "G27InputDevice.h"
 #include "PS4AuthDevice.h"
 #include <usbhub.h>
 #include <SPI.h>
@@ -43,9 +43,12 @@
 // USB Host side. Depending on the USB HUB used, more or less USBHub declarations are needed
 USB Usb;
 USBHub  Hub1(&Usb);
+USBHub  Hub2(&Usb);
+USBHub  Hub3(&Usb);
+USBHub  Hub4(&Usb); // Just in case...
 
 // The input device
-DrivingForceGT DFGT(&Usb);
+G27InputDevice G27Input(&Usb);
 
 // The authentication device
 PS4AuthDevice PS4AD(&Usb);
@@ -56,7 +59,7 @@ void setup()
   Serial.begin(115200);
   Serial.println("g29emu version 0.1 by Mathijs van den Berg");
   Serial.println("Based on GIMX by Mathieu Laurendeau");
-  Serial.println("Input device: Logitech Driving Force GT");
+  Serial.println("Input device: Logitech G27 PS3");
   Serial.println("Output device: Logitech G29 PS4");
   
   if (Usb.Init() == -1)
@@ -73,4 +76,3 @@ void loop()
 	USB_USBTask();
   Usb.Task();
 }
-

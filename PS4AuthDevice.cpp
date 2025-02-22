@@ -44,7 +44,7 @@ uint8_t PS4AuthDevice::OnInitSuccessful()
 {
   if (HIDUniversal::VID == PS4AuthDevice_VID && (HIDUniversal::PID == PS4AuthDevice_PID || HIDUniversal::PID == PS4AuthDevice_PID2))
   {
-    Serial.println("Init succesfull PS4AuthDevice");
+    Serial.println("Init succesful PS4AuthDevice");
     if (pFuncOnInit)
     {
       
@@ -106,4 +106,3 @@ void PS4AuthDevice::SetReport(unsigned char * buffer,int report)
     Serial.println("");
   }
 }
-
