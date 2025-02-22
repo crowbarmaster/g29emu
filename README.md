@@ -1,5 +1,9 @@
 # g29emu v0.1
 
+Crowbarmaster here! Big thanks to @mathijsvandenberg for figuring this out for his DFGT. All it took was the hardware and some tweaking to make this work for your G27.
+I have a few buttons set up based on my desires. Feel free to shift things around as you feel fit! I don't typically reference my RPM LEDs, but i may fix that just because in the future!
+
+------------------------------------------------------------------------------------------------------------------------------------------
 First of all, big thanks to matlo for creating [GIMX](https://github.com/matlo/GIMX). This is the base of g29emu.
 
 After playing around with [GIMX](https://github.com/matlo/GIMX), it works perfectly for my Logitech Driving Force GT (G29 emulated) for F1 2018 on my PS4. However, it was not very portable to my home TV. I thought a Raspberry Pi would solve the problem, but too many libusb timeouts caused my forcefeedback to glitch as e.g. force did not reset to normal.
@@ -22,9 +26,9 @@ I cloned the G29EMUPS4 files, stripped the UART commands and implemented the USB
 - Wheel is working on PS4, most buttons and pedals working
 - Authenticate trough genuine controller
 - PS4 Detects G29 wheel (Active with PS button)
-- Driving Force GT wheel initiation working (exit compatible mode, enter Force GT mode)
+- G27 wheel initiation working (exit compatible mode, enter native mode)
 - USB Hub support
-- Mapping the buttons from DFGT to G29 report
+- Mapping the buttons from G27 to G29 report
 - Forcefeedback working (thanks to the Logitech_Force_Feedback_Protocol_V1.5.pdf)
 
 # TODO:
